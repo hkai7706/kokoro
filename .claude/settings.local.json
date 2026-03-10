@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan db:seed --force)",
+      "Bash(php artisan storage:link)",
+      "Bash(php artisan route:list --compact)",
+      "Bash(php artisan route:list)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/auth)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/home)",
+      "Bash(curl -s -c /tmp/kokoro_cookies -b /tmp/kokoro_cookies http://localhost:8000/home)",
+      "Bash(TOKEN=\"DYAFXxGcIxPbhAC2hrQIw0gFECQwDZ8UzWkCug8C\")",
+      "Bash(curl -s -c /tmp/admin_cookies -b /tmp/admin_cookies -X POST http://localhost:8000/admin/login -d \"_token=$TOKEN&email=hkai7706@gmail.com&password=000000\" -o /dev/null -w \"%{http_code} -> %{redirect_url}\")",
+      "Bash(curl -s -c /tmp/admin_cookies -b /tmp/admin_cookies http://localhost:8000/admin/dashboard)",
+      "Bash(curl -s -c /tmp/kokoro_cookies -b /tmp/kokoro_cookies -o /dev/null -w \"%{http_code}\" http://localhost:8000/user/3)",
+      "Bash(taskkill //F //IM \"php.exe\")",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(php artisan tinker --execute=\":*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/auth)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/admin/login)",
+      "Bash(php -r \"require ''vendor/autoload.php''; $app = require_once ''bootstrap/app.php''; $kernel = $app->make\\(Illuminate\\\\Contracts\\\\Console\\\\Kernel::class\\); $kernel->bootstrap\\(\\); $users = App\\\\Models\\\\User::all\\(\\); foreach\\($users as $u\\) { echo $u->id . '' | '' . $u->email . '' | '' . $u->role . '' | '' . $u->status . PHP_EOL; } echo ''Total: '' . $users->count\\(\\) . PHP_EOL;\")",
+      "Bash(php artisan db:table users)",
+      "Bash(curl -s -c cookies.txt http://127.0.0.1:8001/auth)",
+      "Bash(curl -s -b cookies.txt -c cookies.txt -X POST http://127.0.0.1:8001/login -d \"email=sakura@demo.com&password=password123&_token=4hcYgsXLdPfNIJ3pYzIGa833Anuj6ygIUZxneF53\" -w \"\\\\nHTTP_CODE:%{http_code}\" -L --max-redirs 0)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/home)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/search)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/liked)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/who-liked-me)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/messages)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/profile)",
+      "Bash(curl -s -b cookies.txt -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8001/user/3)",
+      "Bash(curl -s -b cookies.txt http://127.0.0.1:8001/home)",
+      "Bash(curl -s -b cookies.txt http://127.0.0.1:8001/user/3)",
+      "Bash(curl -s -b cookies.txt http://127.0.0.1:8001/search)",
+      "Bash(curl -s -D - -o /dev/null http://127.0.0.1:8001/)",
+      "Bash(curl -s http://127.0.0.1:8002/auth)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8002/auth)"
+    ]
+  }
+}
