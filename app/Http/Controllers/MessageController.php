@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Block;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Notification;
@@ -50,8 +51,19 @@ class MessageController extends Controller
 
     public function conversation($userId)
     {
+        abort_unless(is_numeric($userId), 404);
         $user = auth()->user();
-        $partner = User::with('profile')->findOrFail($userId);
+        $partner = User::with('profile')->findOrFail((int) $userId);
+
+        // Cannot message yourself
+        if ($partner->id === $user->id) {
+            return redirect()->route('messages.inbox');
+        }
+
+        // Check if blocked
+        if ($user->hasBlocked($partner->id) || Block::where('user_id', $partner->id)->where('blocked_user_id', $user->id)->exists()) {
+            return redirect()->route('messages.inbox')->with('error', 'Cannot message this user.');
+        }
 
         // Check if they are matched
         if (!$user->isMatchedWith($partner->id)) {
@@ -77,12 +89,24 @@ class MessageController extends Controller
 
     public function send(Request $request, $userId)
     {
+        abort_unless(is_numeric($userId), 404);
+
         $request->validate([
             'message' => 'required|string|max:5000',
         ]);
 
         $user = auth()->user();
-        $partner = User::findOrFail($userId);
+        $partner = User::findOrFail((int) $userId);
+
+        // Cannot message yourself
+        if ($partner->id === $user->id) {
+            return back()->with('error', 'Invalid action.');
+        }
+
+        // Check blocked
+        if ($user->hasBlocked($partner->id) || Block::where('user_id', $partner->id)->where('blocked_user_id', $user->id)->exists()) {
+            return back()->with('error', 'Cannot message this user.');
+        }
 
         if (!$user->isMatchedWith($partner->id)) {
             return back()->with('error', 'You can only message matched users.');
@@ -109,8 +133,15 @@ class MessageController extends Controller
 
     public function getNewMessages(Request $request, $userId)
     {
-        $lastId = $request->query('after', 0);
+        abort_unless(is_numeric($userId), 404);
+        $lastId = max(0, (int) $request->query('after', 0));
         $user = auth()->user();
+        $userId = (int) $userId;
+
+        // Verify match exists
+        if (!$user->isMatchedWith($userId)) {
+            return response()->json([], 403);
+        }
 
         $messages = Message::where('id', '>', $lastId)
             ->where(function ($q) use ($user, $userId) {

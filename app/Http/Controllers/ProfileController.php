@@ -106,8 +106,25 @@ class ProfileController extends Controller
 
     public function viewUser($id)
     {
-        $user = \App\Models\User::with('profile')->findOrFail($id);
+        abort_unless(is_numeric($id), 404);
+        $user = \App\Models\User::with('profile')->findOrFail((int) $id);
         $currentUser = auth()->user();
+
+        // Prevent viewing own profile via this route
+        if ($user->id === $currentUser->id) {
+            return redirect()->route('profile.show');
+        }
+
+        // Prevent viewing admin profiles
+        if ($user->isAdmin()) {
+            abort(404);
+        }
+
+        // Check if blocked by the other user
+        if (\App\Models\Block::where('user_id', $user->id)->where('blocked_user_id', $currentUser->id)->exists()) {
+            abort(404);
+        }
+
         $isMatched = $currentUser->isMatchedWith($user->id);
         $hasLiked = $currentUser->hasLiked($user->id);
 

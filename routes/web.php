@@ -56,10 +56,10 @@ Route::middleware(['auth', \App\Http\Middleware\CheckBanned::class])->group(func
         Route::get('/liked', [MatchController::class, 'liked'])->name('liked');
         Route::get('/who-liked-me', [MatchController::class, 'whoLikedMe'])->name('who.liked.me');
 
-        // Block & Report
-        Route::post('/block', [MatchController::class, 'block'])->name('user.block');
-        Route::post('/unblock', [MatchController::class, 'unblock'])->name('user.unblock');
-        Route::post('/report', [MatchController::class, 'report'])->name('user.report');
+        // Block & Report (rate limited)
+        Route::post('/block', [MatchController::class, 'block'])->name('user.block')->middleware('throttle:30,60');
+        Route::post('/unblock', [MatchController::class, 'unblock'])->name('user.unblock')->middleware('throttle:30,60');
+        Route::post('/report', [MatchController::class, 'report'])->name('user.report')->middleware('throttle:10,60');
 
         // Messages (rate limited: 30 messages per minute)
         Route::get('/messages', [MessageController::class, 'inbox'])->name('messages.inbox');

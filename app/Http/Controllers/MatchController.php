@@ -14,7 +14,7 @@ class MatchController extends Controller
 {
     public function like(Request $request)
     {
-        $request->validate(['user_id' => 'required|exists:users,id']);
+        $request->validate(['user_id' => 'required|integer|exists:users,id']);
 
         $senderId = auth()->id();
         $receiverId = $request->user_id;
@@ -78,7 +78,7 @@ class MatchController extends Controller
 
     public function unlike(Request $request)
     {
-        $request->validate(['user_id' => 'required|exists:users,id']);
+        $request->validate(['user_id' => 'required|integer|exists:users,id']);
 
         Like::where('sender_id', auth()->id())
             ->where('receiver_id', $request->user_id)
@@ -126,7 +126,7 @@ class MatchController extends Controller
 
     public function block(Request $request)
     {
-        $request->validate(['user_id' => 'required|exists:users,id']);
+        $request->validate(['user_id' => 'required|integer|exists:users,id']);
         $userId = $request->user_id;
 
         if (auth()->id() == $userId) {
@@ -154,7 +154,7 @@ class MatchController extends Controller
 
     public function unblock(Request $request)
     {
-        $request->validate(['user_id' => 'required|exists:users,id']);
+        $request->validate(['user_id' => 'required|integer|exists:users,id']);
 
         Block::where('user_id', auth()->id())
             ->where('blocked_user_id', $request->user_id)
@@ -168,19 +168,31 @@ class MatchController extends Controller
     public function report(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|integer|exists:users,id',
             'reason' => 'required|string|max:500',
-            'message_id' => 'nullable|exists:messages,id',
+            'details' => 'nullable|string|max:2000',
+            'message_id' => 'nullable|integer|exists:messages,id',
         ]);
 
         if (auth()->id() == $request->user_id) {
             return back()->with('error', 'You cannot report yourself.');
         }
 
+        // Prevent duplicate pending reports
+        $existingReport = Report::where('reporter_id', auth()->id())
+            ->where('reported_user_id', $request->user_id)
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($existingReport) {
+            return back()->with('info', 'You already have a pending report for this user.');
+        }
+
         Report::create([
             'reporter_id' => auth()->id(),
             'reported_user_id' => $request->user_id,
-            'reason' => $request->reason,
+            'reason' => e($request->reason),
+            'details' => $request->details ? e($request->details) : null,
             'message_id' => $request->message_id,
             'status' => 'pending',
         ]);
