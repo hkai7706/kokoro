@@ -5,11 +5,8 @@ nixPkgs = ["...", "php83Extensions.pdo_pgsql", "php83Extensions.pgsql"]
 cmds = [
     "mkdir -p storage/framework/{sessions,views,cache/data}",
     "mkdir -p storage/logs",
-    "composer install --no-dev --optimize-autoloader",
-    "php artisan config:cache",
-    "php artisan route:cache",
-    "php artisan view:cache"
+    "composer install --no-dev --optimize-autoloader"
 ]
 
 [start]
-cmd = "php artisan view:clear && php artisan view:cache && php artisan migrate --force && php artisan db:seed --force && php artisan storage:link && php -S 0.0.0.0:$PORT -t public"
+cmd = "php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && php artisan db:seed --force && php artisan storage:link && php -S 0.0.0.0:$PORT -t public"
