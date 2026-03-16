@@ -65,7 +65,7 @@ Route::middleware(['auth', \App\Http\Middleware\CheckBanned::class])->group(func
         Route::get('/messages', [MessageController::class, 'inbox'])->name('messages.inbox');
         Route::get('/messages/{userId}', [MessageController::class, 'conversation'])->name('messages.conversation');
         Route::post('/messages/{userId}', [MessageController::class, 'send'])->name('messages.send')->middleware('throttle:30,1');
-        Route::get('/messages/{userId}/new', [MessageController::class, 'getNewMessages'])->name('messages.new');
+        Route::get('/messages/{userId}/new', [MessageController::class, 'getNewMessages'])->name('messages.new')->middleware('throttle:20,1');
     });
 });
 

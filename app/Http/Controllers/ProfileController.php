@@ -25,11 +25,11 @@ class ProfileController extends Controller
             'age' => 'required|integer|min:18|max:99',
             'gender' => 'required|in:male,female,other',
             'location' => 'required|string|max:255',
-            'prefecture' => 'nullable|string|max:255',
+            'prefecture' => 'nullable|string|in:' . implode(',', (new self)->getPrefectures()),
             'hobbies' => 'nullable|string|max:1000',
             'interests' => 'nullable|string|max:1000',
             'bio' => 'nullable|string|max:2000',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120|dimensions:max_width=4096,max_height=4096',
         ]);
 
         $user = auth()->user();
@@ -73,11 +73,11 @@ class ProfileController extends Controller
             'age' => 'required|integer|min:18|max:99',
             'gender' => 'required|in:male,female,other',
             'location' => 'required|string|max:255',
-            'prefecture' => 'nullable|string|max:255',
+            'prefecture' => 'nullable|string|in:' . implode(',', (new self)->getPrefectures()),
             'hobbies' => 'nullable|string|max:1000',
             'interests' => 'nullable|string|max:1000',
             'bio' => 'nullable|string|max:2000',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120|dimensions:max_width=4096,max_height=4096',
         ]);
 
         $user = auth()->user();

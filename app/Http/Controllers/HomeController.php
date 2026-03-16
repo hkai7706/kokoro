@@ -52,21 +52,24 @@ class HomeController extends Controller
             ->whereHas('profile', fn ($q) => $q->where('is_complete', true))
             ->with('profile');
 
-        if ($request->filled('prefecture')) {
+        $prefectures = app(ProfileController::class)->getPrefectures();
+
+        if ($request->filled('prefecture') && in_array($request->prefecture, $prefectures, true)) {
             $query->whereHas('profile', fn ($q) => $q->where('prefecture', $request->prefecture));
         }
-        if ($request->filled('gender')) {
+        if ($request->filled('gender') && in_array($request->gender, ['male', 'female', 'other'], true)) {
             $query->whereHas('profile', fn ($q) => $q->where('gender', $request->gender));
         }
         if ($request->filled('min_age')) {
-            $query->whereHas('profile', fn ($q) => $q->where('age', '>=', (int) $request->min_age));
+            $minAge = max(18, min(99, (int) $request->min_age));
+            $query->whereHas('profile', fn ($q) => $q->where('age', '>=', $minAge));
         }
         if ($request->filled('max_age')) {
-            $query->whereHas('profile', fn ($q) => $q->where('age', '<=', (int) $request->max_age));
+            $maxAge = max(18, min(99, (int) $request->max_age));
+            $query->whereHas('profile', fn ($q) => $q->where('age', '<=', $maxAge));
         }
 
         $results = $query->paginate(12)->withQueryString();
-        $prefectures = app(ProfileController::class)->getPrefectures();
 
         return view('search', compact('results', 'prefectures'));
     }

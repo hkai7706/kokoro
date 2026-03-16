@@ -121,7 +121,7 @@ class MessageController extends Controller
         Notification::create([
             'user_id' => $partner->id,
             'type' => 'message',
-            'content' => $user->name . ' sent you a message.',
+            'content' => e($user->name) . ' sent you a message.',
         ]);
 
         if ($request->expectsJson()) {

@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\AdminLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -82,7 +83,7 @@ class AdminController extends Controller
         $query = User::with('profile')->where('role', 'user');
 
         if ($request->filled('search')) {
-            $s = $request->search;
+            $s = Str::escapeLike($request->search);
             $query->where(function ($q) use ($s) {
                 $q->where('name', 'like', "%{$s}%")
                   ->orWhere('email', 'like', "%{$s}%");
@@ -99,24 +100,45 @@ class AdminController extends Controller
 
     public function banUser($id)
     {
-        $user = User::findOrFail($id);
+        abort_unless(is_numeric($id), 404);
+        $user = User::findOrFail((int) $id);
+
+        // Prevent banning admin accounts
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Cannot ban an admin account.');
+        }
+
         $user->update(['status' => 'banned']);
-        $this->log('ban_user', $id);
+        $this->log('ban_user', (int) $id);
         return back()->with('success', 'User has been banned.');
     }
 
     public function unbanUser($id)
     {
-        $user = User::findOrFail($id);
+        abort_unless(is_numeric($id), 404);
+        $user = User::findOrFail((int) $id);
+
+        // Prevent modifying admin accounts
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Cannot modify an admin account.');
+        }
+
         $user->update(['status' => 'active']);
-        $this->log('unban_user', $id);
+        $this->log('unban_user', (int) $id);
         return back()->with('success', 'User has been unbanned.');
     }
 
     public function deleteUser($id)
     {
-        $user = User::findOrFail($id);
-        $this->log('delete_user', $id, 'Deleted user: ' . $user->email);
+        abort_unless(is_numeric($id), 404);
+        $user = User::findOrFail((int) $id);
+
+        // Prevent deleting admin accounts
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Cannot delete an admin account.');
+        }
+
+        $this->log('delete_user', (int) $id, 'Deleted user: ' . e($user->email));
         $user->delete();
         return back()->with('success', 'User has been deleted.');
     }
@@ -137,17 +159,19 @@ class AdminController extends Controller
 
     public function resolveReport($id)
     {
-        $report = Report::findOrFail($id);
+        abort_unless(is_numeric($id), 404);
+        $report = Report::findOrFail((int) $id);
         $report->update(['status' => 'resolved']);
-        $this->log('resolve_report', $id);
+        $this->log('resolve_report', (int) $id);
         return back()->with('success', 'Report resolved.');
     }
 
     public function reviewReport($id)
     {
-        $report = Report::findOrFail($id);
+        abort_unless(is_numeric($id), 404);
+        $report = Report::findOrFail((int) $id);
         $report->update(['status' => 'reviewed']);
-        $this->log('review_report', $id);
+        $this->log('review_report', (int) $id);
         return back()->with('success', 'Report marked as reviewed.');
     }
 
@@ -169,7 +193,8 @@ class AdminController extends Controller
         $query = Message::with(['sender', 'receiver']);
 
         if ($request->filled('search')) {
-            $query->where('message', 'like', '%' . $request->search . '%');
+            $s = Str::escapeLike($request->search);
+            $query->where('message', 'like', "%{$s}%");
         }
 
         $messages = $query->latest()->paginate(30)->withQueryString();
