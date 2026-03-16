@@ -312,7 +312,7 @@
         <button onclick="closeGameModal()" class="absolute top-3 right-3 z-10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-full w-7 h-7 flex items-center justify-center">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
-        <div id="game-content" class="overflow-y-auto max-h-[85vh]"></div>
+        <div id="game-content" class="overflow-y-auto max-h-[85vh]" style="display:block!important"></div>
     </div>
 </div>
 
@@ -323,7 +323,7 @@
         <button onclick="closeBlogModal()" class="absolute top-3 right-3 z-10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-full w-7 h-7 flex items-center justify-center">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
-        <div id="blog-content" class="overflow-y-auto max-h-[85vh]"></div>
+        <div id="blog-content" class="overflow-y-auto max-h-[85vh]" style="display:block!important"></div>
     </div>
 </div>
 @endsection
