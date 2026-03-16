@@ -20,8 +20,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS in production
-        if ($this->app->environment('production')) {
+        // Force HTTPS when not on localhost (handles Railway, Heroku, etc.)
+        if (!$this->app->environment('local')) {
+            URL::forceScheme('https');
+        }
+
+        // Also force HTTPS if the request came through a proxy with X-Forwarded-Proto
+        if (request()->header('X-Forwarded-Proto') === 'https' ||
+            str_contains(config('app.url', ''), 'https://')) {
             URL::forceScheme('https');
         }
     }

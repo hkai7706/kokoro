@@ -112,10 +112,66 @@
 @section('scripts')
 <script>
     const chatBox = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const msgInput = document.getElementById('message-input');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+        || document.querySelector('input[name="_token"]')?.value;
+
     chatBox.scrollTop = chatBox.scrollHeight;
 
     let lastMsgId = {{ $messages->last() ? $messages->last()->id : 0 }};
 
+    // Send message via AJAX instead of form submit
+    chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const text = msgInput.value.trim();
+        if (!text) return;
+
+        // Immediately show the message in the chat (optimistic UI)
+        const now = new Date();
+        const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+        appendMessage(text, true, timeStr);
+        msgInput.value = '';
+        msgInput.focus();
+
+        try {
+            const res = await fetch(`/messages/{{ $partner->id }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ message: text })
+            });
+            const data = await res.json();
+            if (data.message && data.message.id) {
+                lastMsgId = Math.max(lastMsgId, data.message.id);
+            }
+        } catch (err) {
+            console.error('Failed to send:', err);
+        }
+    });
+
+    function appendMessage(text, isMine, time) {
+        // Remove empty state if present
+        const emptyState = chatBox.querySelector('.text-center.py-12');
+        if (emptyState) emptyState.remove();
+
+        const div = document.createElement('div');
+        div.className = 'flex ' + (isMine ? 'justify-end' : 'justify-start');
+        const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        div.innerHTML = `
+            <div class="max-w-[75%] ${isMine ? 'bg-rose-500 text-white' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700'} rounded-2xl px-3 py-2 shadow-sm">
+                <p class="text-[13px] leading-relaxed">${escaped}</p>
+                <p class="text-[10px] ${isMine ? 'text-white/50' : 'text-gray-300 dark:text-gray-500'} mt-0.5 text-right">${time}</p>
+            </div>`;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Poll for new messages
     setInterval(async () => {
         try {
             const res = await fetch(`/messages/{{ $partner->id }}/new?after=${lastMsgId}`);
@@ -123,20 +179,14 @@
             msgs.forEach(msg => {
                 if (msg.id > lastMsgId) {
                     lastMsgId = msg.id;
-                    const div = document.createElement('div');
-                    div.className = 'flex ' + (msg.is_mine ? 'justify-end' : 'justify-start');
-                    div.innerHTML = `
-                        <div class="max-w-[75%] ${msg.is_mine ? 'bg-rose-500 text-white' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700'} rounded-2xl px-3 py-2 shadow-sm">
-                            <p class="text-[13px] leading-relaxed">${msg.message}</p>
-                            <p class="text-[10px] ${msg.is_mine ? 'text-white/50' : 'text-gray-300 dark:text-gray-500'} mt-0.5 text-right">${msg.time}</p>
-                        </div>`;
-                    chatBox.appendChild(div);
-                    chatBox.scrollTop = chatBox.scrollHeight;
+                    if (!msg.is_mine) {
+                        appendMessage(msg.message, false, msg.time);
+                    }
                 }
             });
         } catch (e) {}
     }, 5000);
 
-    document.getElementById('message-input').focus();
+    msgInput.focus();
 </script>
 @endsection

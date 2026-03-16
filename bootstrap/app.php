@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust Railway's load balancer proxies for HTTPS detection
         $middleware->trustProxies(at: '*');
 
+        $middleware->web(prepend: [
+            \App\Http\Middleware\ForceHttps::class,
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\SecurityHeaders::class,
         ]);
