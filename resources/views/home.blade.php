@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Home - KOKORO')
+@section('title', 'Home - KOKORO') {{-- v2 --}}
 
 @section('head')
 <style>
