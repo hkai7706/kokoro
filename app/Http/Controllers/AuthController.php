@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -80,6 +81,8 @@ class AuthController extends Controller
             'role' => 'user',
             'status' => 'active',
         ]);
+
+        event(new Registered($user));
 
         Auth::login($user);
         $request->session()->regenerate();

@@ -32,6 +32,7 @@ app/
 ├── Http/
 │   ├── Controllers/
 │   │   ├── AuthController.php      # Login, register, logout (specific error: no account / wrong password)
+│   │   ├── PasswordResetController.php # Forgot password, reset password with token
 │   │   ├── HomeController.php      # Home feed, search with filters
 │   │   ├── ProfileController.php   # Profile CRUD, view other users
 │   │   ├── MatchController.php     # Like/unlike, block/report, who-liked-me
@@ -61,6 +62,11 @@ resources/views/
 │   └── admin.blade.php     # Admin layout
 ├── landing.blade.php       # Public landing page (SEO, testimonials, 3-step flow)
 ├── auth.blade.php          # Login/register (standalone, own lang toggle, show/hide password)
+├── auth-verify-email.blade.php  # Email verification notice page
+├── auth-forgot-password.blade.php # Forgot password form
+├── auth-reset-password.blade.php  # Reset password form (with token)
+├── errors/
+│   └── 404.blade.php       # Custom 404 page (bilingual, KOKORO-branded)
 ├── home.blade.php          # Activity hub: 4 mini games (Top Top style), articles, profiles
 ├── search.blade.php        # Search with filters (prefecture, gender, age range)
 ├── profile.blade.php       # Edit own profile (horizontal photo layout)
@@ -155,6 +161,12 @@ All games are client-side JavaScript in `home.blade.php`. No backend routes need
 |--------|-----|------------|----------------|
 | GET | / | Landing page | - |
 | GET/POST | /auth, /login, /register | AuthController | throttle |
+| GET | /email/verify | verification.notice | auth |
+| GET | /email/verify/{id}/{hash} | verification.verify | auth, signed |
+| POST | /email/verification-notification | verification.send | auth, throttle |
+| GET/POST | /forgot-password | PasswordResetController | throttle |
+| GET | /reset-password/{token} | PasswordResetController@showResetForm | - |
+| POST | /reset-password | PasswordResetController@resetPassword | - |
 | GET | /home | HomeController@index | auth, CheckBanned |
 | GET | /search | HomeController@search | auth, CheckBanned |
 | GET | /profile | ProfileController@show | auth |

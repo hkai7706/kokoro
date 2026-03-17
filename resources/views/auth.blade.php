@@ -9,6 +9,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon-180x180.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#e11d48">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -67,9 +69,12 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" name="remember" id="remember" class="rounded border-gray-300 text-rose-500 focus:ring-rose-400">
-                            <label for="remember" class="text-xs text-gray-500" data-en="Remember me" data-jp="ログイン状態を保持">Remember me</label>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="remember" id="remember" class="rounded border-gray-300 text-rose-500 focus:ring-rose-400">
+                                <label for="remember" class="text-xs text-gray-500" data-en="Remember me" data-jp="ログイン状態を保持">Remember me</label>
+                            </div>
+                            <a href="{{ route('password.request') }}" class="text-xs text-rose-500 hover:text-rose-600 font-medium" data-en="Forgot password?" data-jp="パスワードを忘れた？">Forgot password?</a>
                         </div>
                         <button type="submit" class="w-full py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-lg transition text-sm" data-en="Log in" data-jp="ログイン">Log in</button>
                     </div>
