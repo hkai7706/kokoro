@@ -77,13 +77,13 @@
         .dark ::-webkit-scrollbar-thumb{background:#374151}
 
         /* Mobile nav */
-        .mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:.625rem;font-weight:500;padding:.375rem 0;color:#9ca3af;transition:color .15s;min-width:3rem}
+        .mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:.6875rem;font-weight:500;padding:.375rem 0;color:#6b7280;transition:color .15s;min-width:3rem}
         .mobile-nav-item.active{color:#e11d48}
         .mobile-nav-item:hover{color:#6b7280}
         .mobile-nav-item.active:hover{color:#e11d48}
 
         /* Section labels */
-        .section-label{font-size:.6875rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em}
+        .section-label{font-size:.6875rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}
     </style>
     @yield('head')
 </head>
@@ -93,8 +93,8 @@
     <header class="bg-white dark:bg-gray-900 sticky top-0 z-50 border-b border-gray-200/60 dark:border-gray-800">
         <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between h-14">
             <div class="flex items-center gap-3">
-                <button onclick="document.getElementById('mobile-sidebar').classList.toggle('hidden')" class="lg:hidden text-gray-400 hover:text-gray-600 dark:hover:text-white -ml-1 p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <button onclick="document.getElementById('mobile-sidebar').classList.toggle('hidden')" class="lg:hidden text-gray-500 hover:text-gray-700 dark:hover:text-white -ml-1 p-1" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-sidebar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <a href="{{ route('home') }}" class="flex items-center gap-1">
                     <span class="text-lg font-extrabold tracking-tight text-rose-500">KOKORO</span>
@@ -103,21 +103,21 @@
             <div class="flex items-center gap-1">
                 @auth
                 @php $unreadCount = auth()->user()->unreadMessagesCount(); @endphp
-                <a href="{{ route('messages.inbox') }}" class="relative p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                <a href="{{ route('messages.inbox') }}" class="relative p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition" aria-label="Messages{{ $unreadCount > 0 ? ' (' . $unreadCount . ' unread)' : '' }}">
+                    <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                     @if($unreadCount > 0)
                         <span class="absolute top-1 right-1 bg-rose-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{{ $unreadCount > 9 ? '9+' : $unreadCount }}</span>
                     @endif
                 </a>
-                <button onclick="toggleDarkMode()" class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                    <svg id="dark-icon" class="w-[18px] h-[18px] hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                    <svg id="light-icon" class="w-[18px] h-[18px] hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                <button onclick="toggleDarkMode()" class="p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition" aria-label="Toggle dark mode">
+                    <svg id="dark-icon" class="w-[18px] h-[18px] hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="light-icon" class="w-[18px] h-[18px] hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                 </button>
-                <button onclick="toggleLanguage()" class="hidden sm:flex items-center text-[11px] font-semibold px-2 py-1 rounded-md cursor-pointer border border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition" id="lang-toggle">
+                <button onclick="toggleLanguage()" class="hidden sm:flex items-center text-[11px] font-semibold px-2 py-1 rounded-md cursor-pointer border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition" id="lang-toggle" aria-label="Switch language">
                     <span id="lang-label">ENG</span>
                 </button>
                 <div class="relative ml-1">
-                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="flex items-center gap-1.5 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg pl-1 pr-2 py-1 transition cursor-pointer">
+                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="flex items-center gap-1.5 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg pl-1 pr-2 py-1 transition cursor-pointer" aria-label="User menu" aria-expanded="false" aria-haspopup="true">
                         <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-900/20 overflow-hidden border border-rose-200/60 dark:border-rose-800/40 flex items-center justify-center">
                             @if(auth()->user()->profile && auth()->user()->profile->profile_photo)
                                 <img src="{{ asset('storage/' . auth()->user()->profile->profile_photo) }}" class="w-full h-full object-cover">
@@ -125,12 +125,12 @@
                                 <span class="text-[11px] font-bold text-rose-400">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                             @endif
                         </div>
-                        <svg class="w-3 h-3 text-gray-300 hidden sm:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="w-3 h-3 text-gray-300 hidden sm:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="hidden absolute right-0 mt-1 w-44 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 py-1 z-50">
                         <div class="px-3.5 py-2 border-b border-gray-100 dark:border-gray-800">
                             <p class="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">{{ auth()->user()->name }}</p>
-                            <p class="text-[11px] text-gray-400 truncate">{{ auth()->user()->email }}</p>
+                            <p class="text-[11px] text-gray-500 truncate">{{ auth()->user()->email }}</p>
                         </div>
                         <a href="{{ route('profile.show') }}" class="block px-3.5 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800" data-en="My Profile" data-jp="プロフィール">My Profile</a>
                         <a href="{{ route('messages.inbox') }}" class="block px-3.5 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">
@@ -139,7 +139,7 @@
                         </a>
                         <hr class="my-1 border-gray-100 dark:border-gray-800">
                         <form method="POST" action="{{ route('logout') }}">@csrf
-                            <button type="submit" class="block w-full text-left px-3.5 py-2 text-sm text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10" data-en="Log out" data-jp="ログアウト">Log out</button>
+                            <button type="submit" class="block w-full text-left px-3.5 py-2 text-sm text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10" data-en="Log out" data-jp="ログアウト">Log out</button>
                         </form>
                     </div>
                 </div>
@@ -151,8 +151,8 @@
     <div class="flex min-h-[calc(100vh-3.5rem)] max-w-screen-2xl mx-auto w-full">
         {{-- Desktop Sidebar --}}
         @auth
-        <aside class="hidden lg:flex flex-col w-48 shrink-0 border-r border-gray-200/60 dark:border-gray-800 px-3 py-5 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-            <nav class="space-y-0.5">
+        <aside class="hidden lg:flex flex-col w-48 shrink-0 border-r border-gray-200/60 dark:border-gray-800 px-3 py-5 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto" role="complementary" aria-label="Sidebar navigation">
+            <nav class="space-y-0.5" aria-label="Main navigation">
                 <a href="{{ route('home') }}" class="sidebar-link {{ request()->routeIs('home') ? 'active' : '' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span data-en="Home" data-jp="ホーム">Home</span>
@@ -189,7 +189,7 @@
             </nav>
             <div class="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
                 <form method="POST" action="{{ route('logout') }}">@csrf
-                    <button type="submit" class="sidebar-link w-full text-left text-gray-400 hover:text-red-500 hover:bg-red-50/50 dark:hover:bg-red-900/10">
+                    <button type="submit" class="sidebar-link w-full text-left text-gray-500 hover:text-red-500 hover:bg-red-50/50 dark:hover:bg-red-900/10">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                         <span data-en="Log out" data-jp="ログアウト">Log out</span>
                     </button>
@@ -204,8 +204,8 @@
             <div class="absolute left-0 top-0 bottom-0 w-60 bg-white dark:bg-gray-900 shadow-xl p-4 overflow-y-auto animate-in">
                 <div class="flex items-center justify-between mb-5">
                     <span class="text-lg font-extrabold text-rose-500 tracking-tight">KOKORO</span>
-                    <button onclick="document.getElementById('mobile-sidebar').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <button onclick="document.getElementById('mobile-sidebar').classList.add('hidden')" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 p-1" aria-label="Close menu">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
                 @auth
@@ -240,7 +240,7 @@
                         <span id="mobile-lang-label" data-en="English" data-jp="日本語">English</span>
                     </button>
                     <form method="POST" action="{{ route('logout') }}">@csrf
-                        <button type="submit" class="sidebar-link w-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10">
+                        <button type="submit" class="sidebar-link w-full text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             <span data-en="Log out" data-jp="ログアウト">Log out</span>
                         </button>
@@ -251,26 +251,26 @@
         </div>
 
         {{-- Main Content --}}
-        <main class="flex-1 p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8 min-w-0 overflow-auto">
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8 min-w-0 overflow-auto" role="main" id="main-content">
             @if(session('success'))
                 <div class="mb-5 px-4 py-3 bg-emerald-50 dark:bg-emerald-900/15 border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-700 dark:text-emerald-400 rounded-lg text-sm animate-in flex items-center justify-between" id="flash-success">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         {{ session('success') }}
                     </div>
-                    <button onclick="this.parentElement.remove()" class="text-emerald-400 hover:text-emerald-600 ml-3 text-lg leading-none">&times;</button>
+                    <button onclick="this.parentElement.remove()" class="text-emerald-400 hover:text-emerald-600 ml-3 text-lg leading-none" aria-label="Dismiss">&times;</button>
                 </div>
             @endif
             @if(session('error'))
                 <div class="mb-5 px-4 py-3 bg-red-50 dark:bg-red-900/15 border border-red-200/60 dark:border-red-800/40 text-red-600 dark:text-red-400 rounded-lg text-sm animate-in flex items-center justify-between">
                     <span>{{ session('error') }}</span>
-                    <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 ml-3 text-lg leading-none">&times;</button>
+                    <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 ml-3 text-lg leading-none" aria-label="Dismiss">&times;</button>
                 </div>
             @endif
             @if(session('info'))
                 <div class="mb-5 px-4 py-3 bg-blue-50 dark:bg-blue-900/15 border border-blue-200/60 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 rounded-lg text-sm animate-in flex items-center justify-between">
                     <span>{{ session('info') }}</span>
-                    <button onclick="this.parentElement.remove()" class="text-blue-400 hover:text-blue-600 ml-3 text-lg leading-none">&times;</button>
+                    <button onclick="this.parentElement.remove()" class="text-blue-400 hover:text-blue-600 ml-3 text-lg leading-none" aria-label="Dismiss">&times;</button>
                 </div>
             @endif
             @yield('content')
@@ -279,7 +279,7 @@
 
     {{-- Mobile Bottom Navigation --}}
     @auth
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200/60 dark:border-gray-800 z-40 safe-area-bottom">
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200/60 dark:border-gray-800 z-40 safe-area-bottom" aria-label="Mobile navigation">
         <div class="flex items-center justify-around py-1.5 max-w-md mx-auto">
             <a href="{{ route('home') }}" class="mobile-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
                 <svg class="w-[22px] h-[22px]" fill="{{ request()->routeIs('home') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
