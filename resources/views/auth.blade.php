@@ -11,8 +11,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon-180x180.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="theme-color" content="#e11d48">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

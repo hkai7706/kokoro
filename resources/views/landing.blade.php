@@ -28,9 +28,10 @@
     <meta name="twitter:description" content="Japan's modern partner matching platform.">
 
     <link rel="canonical" href="{{ url('/') }}">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:300,400,500,600,700,800" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,600,700,800&display=swap">
+    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,600,700,800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <script>
         tailwind.config = {
             theme: {
@@ -50,30 +51,34 @@
 </head>
 <body class="font-sans text-gray-800 antialiased bg-white">
 
+    {{-- Skip to content --}}
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:bg-rose-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm">Skip to main content</a>
+
     {{-- Navigation --}}
-    <header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200/60">
-        <nav class="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
-            <span class="text-lg font-extrabold text-rose-500 tracking-tight">KOKORO</span>
+    <header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200/60" role="banner">
+        <nav class="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14" aria-label="Main navigation">
+            <a href="/" class="text-lg font-extrabold text-rose-500 tracking-tight" aria-label="KOKORO homepage">KOKORO</a>
             <div class="hidden md:flex items-center gap-5 text-[13px]">
-                <a href="#how-it-works" class="text-gray-500 hover:text-gray-800 transition">How it works</a>
-                <a href="#features" class="text-gray-500 hover:text-gray-800 transition">Features</a>
-                <a href="#stories" class="text-gray-500 hover:text-gray-800 transition">Stories</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-gray-800 transition">How it works</a>
+                <a href="#features" class="text-gray-600 hover:text-gray-800 transition">Features</a>
+                <a href="#stories" class="text-gray-600 hover:text-gray-800 transition">Stories</a>
             </div>
             <div class="flex items-center gap-3">
-                <a href="/auth" class="text-[13px] text-gray-500 hover:text-gray-800 font-medium transition hidden sm:block">Log in</a>
-                <a href="/auth" class="bg-rose-500 hover:bg-rose-600 text-white text-[13px] font-semibold px-4 py-2 rounded-lg transition">Get started</a>
+                <a href="/auth" class="text-[13px] text-gray-600 hover:text-gray-800 font-medium transition hidden sm:block">Log in</a>
+                <a href="/auth" class="bg-rose-500 hover:bg-rose-600 text-white text-[13px] font-semibold px-4 py-2 rounded-lg transition" aria-label="Get started - create account">Get started</a>
             </div>
         </nav>
     </header>
 
     {{-- Hero --}}
+    <main id="main-content" role="main">
     <section class="pt-14">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
             <div class="max-w-2xl">
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.15] fade-in">
                     Real people.<br>Real connections.
                 </h1>
-                <p class="mt-4 text-base text-gray-500 max-w-md leading-relaxed fade-in fade-in-d1">
+                <p class="mt-4 text-base text-gray-600 max-w-md leading-relaxed fade-in fade-in-d1">
                     KOKORO is a matching platform for people in Japan who want something genuine. No games, no algorithms pushing quantity over quality.
                 </p>
                 <div class="mt-7 flex flex-wrap gap-3 fade-in fade-in-d2">
@@ -89,15 +94,15 @@
             <div class="mt-14 grid grid-cols-3 gap-6 max-w-sm fade-in fade-in-d3">
                 <div>
                     <div class="text-xl font-bold text-gray-900">50K+</div>
-                    <div class="text-gray-400 text-xs mt-0.5">Members</div>
+                    <div class="text-gray-500 text-xs mt-0.5">Members</div>
                 </div>
                 <div>
                     <div class="text-xl font-bold text-gray-900">12K+</div>
-                    <div class="text-gray-400 text-xs mt-0.5">Matches</div>
+                    <div class="text-gray-500 text-xs mt-0.5">Matches</div>
                 </div>
                 <div>
                     <div class="text-xl font-bold text-gray-900">4.8</div>
-                    <div class="text-gray-400 text-xs mt-0.5">User rating</div>
+                    <div class="text-gray-500 text-xs mt-0.5">User rating</div>
                 </div>
             </div>
         </div>
@@ -107,7 +112,7 @@
     <section id="how-it-works" class="py-16 border-t border-gray-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6">
             <h2 class="text-xl font-bold text-gray-900 mb-1">How it works</h2>
-            <p class="text-sm text-gray-400 mb-10">Three steps. That's it.</p>
+            <p class="text-sm text-gray-500 mb-10">Three steps. That's it.</p>
 
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="p-5 rounded-xl border border-gray-200/60">
@@ -115,21 +120,21 @@
                         <span class="text-rose-500 text-sm font-bold">1</span>
                     </div>
                     <h3 class="text-sm font-semibold mb-1.5">Create your profile</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Add your photo, hobbies, and a short bio. Takes about 2 minutes.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Add your photo, hobbies, and a short bio. Takes about 2 minutes.</p>
                 </div>
                 <div class="p-5 rounded-xl border border-gray-200/60">
                     <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mb-3">
                         <span class="text-amber-500 text-sm font-bold">2</span>
                     </div>
                     <h3 class="text-sm font-semibold mb-1.5">Browse and like</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Search by prefecture, age, or interests. Like profiles that catch your eye.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Search by prefecture, age, or interests. Like profiles that catch your eye.</p>
                 </div>
                 <div class="p-5 rounded-xl border border-gray-200/60">
                     <div class="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center mb-3">
                         <span class="text-violet-500 text-sm font-bold">3</span>
                     </div>
                     <h3 class="text-sm font-semibold mb-1.5">Match and talk</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">When you both like each other, you can message directly. No middleman.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">When you both like each other, you can message directly. No middleman.</p>
                 </div>
             </div>
         </div>
@@ -139,7 +144,7 @@
     <section id="features" class="py-16 bg-gray-50/60 border-t border-gray-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6">
             <h2 class="text-xl font-bold text-gray-900 mb-1">Why people choose KOKORO</h2>
-            <p class="text-sm text-gray-400 mb-10">Built for genuine connections, not engagement metrics.</p>
+            <p class="text-sm text-gray-500 mb-10">Built for genuine connections, not engagement metrics.</p>
 
             <div class="grid sm:grid-cols-2 gap-5">
                 <div class="flex gap-3.5 p-4 bg-white rounded-xl border border-gray-200/60">
@@ -148,7 +153,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold mb-0.5">Verified profiles</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">Moderation and reporting keep the community real. No bots, no spam.</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Moderation and reporting keep the community real. No bots, no spam.</p>
                     </div>
                 </div>
                 <div class="flex gap-3.5 p-4 bg-white rounded-xl border border-gray-200/60">
@@ -157,7 +162,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold mb-0.5">All 47 prefectures</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">Find people near you or anywhere in Japan with location-based search.</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Find people near you or anywhere in Japan with location-based search.</p>
                     </div>
                 </div>
                 <div class="flex gap-3.5 p-4 bg-white rounded-xl border border-gray-200/60">
@@ -166,7 +171,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold mb-0.5">Compatibility scores</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">We compare hobbies, interests, and location to show how well you match.</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">We compare hobbies, interests, and location to show how well you match.</p>
                     </div>
                 </div>
                 <div class="flex gap-3.5 p-4 bg-white rounded-xl border border-gray-200/60">
@@ -175,7 +180,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold mb-0.5">Mutual matching</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed">Chat only opens when both people say yes. No unwanted messages.</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Chat only opens when both people say yes. No unwanted messages.</p>
                     </div>
                 </div>
             </div>
@@ -186,7 +191,7 @@
     <section id="stories" class="py-16 border-t border-gray-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6">
             <h2 class="text-xl font-bold text-gray-900 mb-1">People who found each other</h2>
-            <p class="text-sm text-gray-400 mb-10">Real stories from KOKORO members.</p>
+            <p class="text-sm text-gray-500 mb-10">Real stories from KOKORO members.</p>
 
             <div class="grid md:grid-cols-3 gap-5">
                 @foreach([
@@ -202,7 +207,7 @@
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-gray-700">{{ $story['name'] }}</div>
-                            <div class="text-[11px] text-gray-400">{{ $story['location'] }}</div>
+                            <div class="text-[11px] text-gray-500">{{ $story['location'] }}</div>
                         </div>
                     </div>
                 </div>
@@ -215,15 +220,17 @@
     <section class="py-16 bg-gray-50 border-t border-gray-100">
         <div class="max-w-xl mx-auto px-4 text-center">
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Ready to meet someone?</h2>
-            <p class="text-sm text-gray-400 mb-6">Creating an account takes less than a minute. Free to join.</p>
+            <p class="text-sm text-gray-500 mb-6">Creating an account takes less than a minute. Free to join.</p>
             <a href="/auth" class="inline-block bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm px-8 py-3 rounded-lg transition">
                 Get started free
             </a>
         </div>
     </section>
 
+    </main>
+
     {{-- Footer --}}
-    <footer class="bg-gray-900 text-gray-400 py-10">
+    <footer class="bg-gray-900 text-gray-400 py-10" role="contentinfo">
         <div class="max-w-5xl mx-auto px-4 sm:px-6">
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>
@@ -266,8 +273,8 @@
         <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-xs text-gray-300">We use cookies to improve your experience. By continuing, you agree to our cookie policy.</p>
             <div class="flex gap-2 shrink-0">
-                <button onclick="declineCookies()" class="text-xs px-3 py-1.5 border border-gray-600 rounded-lg hover:bg-gray-800 transition">Decline</button>
-                <button onclick="acceptCookies()" class="text-xs px-4 py-1.5 bg-rose-500 rounded-lg font-semibold hover:bg-rose-600 transition">Accept</button>
+                <button onclick="declineCookies()" class="text-xs px-3 py-1.5 border border-gray-600 rounded-lg hover:bg-gray-800 transition" aria-label="Decline cookies">Decline</button>
+                <button onclick="acceptCookies()" class="text-xs px-4 py-1.5 bg-rose-500 rounded-lg font-semibold hover:bg-rose-600 transition" aria-label="Accept cookies">Accept</button>
             </div>
         </div>
     </div>
