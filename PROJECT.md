@@ -39,7 +39,7 @@ Standard Laravel config files. Key customizations:
 
 | Controller | Routes | Purpose |
 |------------|--------|---------|
-| `AuthController.php` | `/auth`, `/login`, `/register`, `/logout` | Handles login form display, login validation, user registration with bcrypt hashing, and session logout |
+| `AuthController.php` | `/auth`, `/login`, `/register`, `/logout` | Handles login form display, login validation (specific errors: no account vs wrong password), user registration with bcrypt hashing, and session logout |
 | `HomeController.php` | `/home`, `/search` | Home page (passes suggested profiles to view), search with filters (prefecture, gender, age range, keyword) |
 | `ProfileController.php` | `/profile/*`, `/user/{id}` | Profile CRUD (create, show, update), view other users with compatibility score calculation |
 | `MatchController.php` | `/like`, `/unlike`, `/skip`, `/liked`, `/who-liked-me`, `/block`, `/unblock`, `/report` | Like/unlike users (creates mutual match if reciprocal), skip profiles, view likes given/received, block/unblock users, file reports |
@@ -114,15 +114,15 @@ Migrations run in order to create all tables:
 | View | Route | Purpose |
 |------|-------|---------|
 | `landing.blade.php` | `/` (unauthenticated) | Standalone landing page. Hero section ("Real people. Real connections."), 3-step how-it-works, feature cards, testimonials, stats counter, CTA, footer, cookie consent. Own Tailwind config, doesn't use app layout. |
-| `auth.blade.php` | `/auth` | Login/register toggle form. Standalone page with own language toggle (`applyAuthLang()`). Handles both login and registration in a single view. |
+| `auth.blade.php` | `/auth` | Login/register toggle form. Standalone page with own language toggle (`applyAuthLang()`). Show/hide password toggle (eye icon) on all password fields. Handles both login and registration in a single view. |
 
 #### Authenticated User Pages
 | View | Route | Purpose |
 |------|-------|---------|
 | `home.blade.php` | `/home` | **Activity hub** — 4 interactive mini games (Top Top style with gradient cards, animations), 3 articles with gradient banners, suggested profiles carousel. Games: Love Quiz, Love Fortune, Emoji Match, Heart Catcher. All game logic is client-side JS. |
 | `search.blade.php` | `/search` | Search/filter users by prefecture, gender, age range, keyword. Displays profile cards in a grid. |
-| `profile.blade.php` | `/profile` | Edit own profile. Horizontal photo+description layout, helper text for hobbies field, success message display. |
-| `profile-create.blade.php` | `/profile/create` | First-time profile creation. Progress dots (step indicator), motivating copy ("Profiles with photos get 5x more likes"), reassurance text. |
+| `profile.blade.php` | `/profile` | Edit own profile. Horizontal photo+description layout, cascading Prefecture→City dropdown, helper text for hobbies field, success message display. |
+| `profile-create.blade.php` | `/profile/create` | First-time profile creation. Progress dots (step indicator), cascading Prefecture→City dropdown, motivating copy ("Profiles with photos get 5x more likes"), reassurance text. |
 | `user-profile.blade.php` | `/user/{id}` | View another user's profile. Shows compatibility score with explanation, like/unlike buttons with contextual hints ("You're matched!" or "Waiting for them..."), block/report modal. |
 | `liked.blade.php` | `/liked` | Grid of profiles the user has liked. Shows match status. |
 | `who-liked-me.blade.php` | `/who-liked-me` | Grid of users who liked the current user. Like-back button. |

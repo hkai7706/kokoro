@@ -7,6 +7,12 @@
     <meta name="description" content="KOKORO is Japan's premier partner matching platform. Connect with genuine people, build meaningful relationships, and find your perfect match today.">
     <meta name="keywords" content="dating, matching, partner, Japan, relationships, kokoro, love, connection">
 
+    {{-- Favicon --}}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon-180x180.png') }}">
+
     {{-- OpenGraph --}}
     <meta property="og:title" content="KOKORO - Find Your Perfect Partner">
     <meta property="og:description" content="Japan's modern partner matching platform. Connect with genuine people.">

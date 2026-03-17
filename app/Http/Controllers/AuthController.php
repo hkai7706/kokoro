@@ -28,9 +28,16 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        // Check if the email exists first
+        if (!User::where('email', $request->email)->exists()) {
+            return back()->withErrors([
+                'email' => 'There is no account with this email. Please sign up first.',
+            ])->withInput($request->only('email'));
+        }
+
         if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             return back()->withErrors([
-                'email' => 'Email or password does not match our records.',
+                'email' => 'The password does not match our records.',
             ])->withInput($request->only('email'));
         }
 

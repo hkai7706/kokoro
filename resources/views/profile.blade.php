@@ -66,21 +66,23 @@
                     </div>
                 </div>
 
-                {{-- Location / Prefecture --}}
+                {{-- Prefecture / City --}}
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="City" data-jp="市区町村">City</label>
-                        <input type="text" name="location" value="{{ old('location', $user->profile->location ?? '') }}" required
-                            class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
-                    </div>
-                    <div>
                         <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Prefecture" data-jp="都道府県">Prefecture</label>
-                        <select name="prefecture" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
-                            <option value="" data-en="Select" data-jp="選択">Select</option>
+                        <select name="prefecture" id="prefecture-select" required onchange="updateCityDropdown()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
+                            <option value="" data-en="Select prefecture" data-jp="都道府県を選択">Select prefecture</option>
                             @foreach($prefectures as $pref)
                                 <option value="{{ $pref }}" {{ old('prefecture', $user->profile->prefecture ?? '') === $pref ? 'selected' : '' }}>{{ $pref }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="City" data-jp="市区町村">City</label>
+                        <select name="location" id="city-select" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
+                            <option value="" data-en="Select prefecture first" data-jp="先に都道府県を選択">Select prefecture first</option>
+                        </select>
+                        <p id="city-hint" class="text-amber-500 text-[11px] mt-1 hidden" data-en="Please select a prefecture first" data-jp="先に都道府県を選択してください">Please select a prefecture first</p>
                     </div>
                 </div>
 
@@ -127,5 +129,98 @@ function previewPhoto(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// Prefecture → City mapping
+const prefectureCities = {
+    'Hokkaido': ['Sapporo','Hakodate','Asahikawa','Obihiro','Kushiro','Kitami','Otaru','Tomakomai'],
+    'Aomori': ['Aomori','Hirosaki','Hachinohe','Misawa','Towada'],
+    'Iwate': ['Morioka','Ichinoseki','Oshu','Kitakami','Kamaishi'],
+    'Miyagi': ['Sendai','Ishinomaki','Shiogama','Natori','Tagajo'],
+    'Akita': ['Akita','Yokote','Daisen','Noshiro','Yuzawa'],
+    'Yamagata': ['Yamagata','Tsuruoka','Sakata','Yonezawa','Tendo'],
+    'Fukushima': ['Fukushima','Koriyama','Iwaki','Aizuwakamatsu','Sukagawa'],
+    'Ibaraki': ['Mito','Tsukuba','Hitachi','Tsuchiura','Kashima'],
+    'Tochigi': ['Utsunomiya','Oyama','Tochigi','Sano','Ashikaga'],
+    'Gunma': ['Maebashi','Takasaki','Ota','Isesaki','Kiryu'],
+    'Saitama': ['Saitama','Kawaguchi','Kawagoe','Tokorozawa','Koshigaya','Urawa'],
+    'Chiba': ['Chiba','Funabashi','Kashiwa','Matsudo','Ichikawa','Urayasu'],
+    'Tokyo': ['Shinjuku','Shibuya','Minato','Chiyoda','Setagaya','Meguro','Shinagawa','Ikebukuro','Akihabara','Roppongi','Ginza','Asakusa','Harajuku','Nakano','Machida'],
+    'Kanagawa': ['Yokohama','Kawasaki','Sagamihara','Fujisawa','Kamakura','Yokosuka'],
+    'Niigata': ['Niigata','Nagaoka','Joetsu','Sanjo','Kashiwazaki'],
+    'Toyama': ['Toyama','Takaoka','Imizu','Tonami','Namerikawa'],
+    'Ishikawa': ['Kanazawa','Hakusan','Komatsu','Kaga','Nanao'],
+    'Fukui': ['Fukui','Sabae','Echizen','Tsuruga','Obama'],
+    'Yamanashi': ['Kofu','Fujiyoshida','Minami-Alps','Kai','Fuefuki'],
+    'Nagano': ['Nagano','Matsumoto','Ueda','Iida','Suwa'],
+    'Gifu': ['Gifu','Ogaki','Kakamigahara','Tajimi','Takayama'],
+    'Shizuoka': ['Shizuoka','Hamamatsu','Numazu','Fuji','Shimizu'],
+    'Aichi': ['Nagoya','Toyohashi','Okazaki','Toyota','Ichinomiya','Kasugai'],
+    'Mie': ['Tsu','Yokkaichi','Suzuka','Matsusaka','Ise'],
+    'Shiga': ['Otsu','Kusatsu','Nagahama','Hikone','Moriyama'],
+    'Kyoto': ['Kyoto','Uji','Kameoka','Maizuru','Fukuchiyama','Gion'],
+    'Osaka': ['Osaka','Sakai','Takatsuki','Toyonaka','Suita','Namba','Umeda','Tennoji'],
+    'Hyogo': ['Kobe','Himeji','Nishinomiya','Amagasaki','Akashi','Takarazuka'],
+    'Nara': ['Nara','Kashihara','Ikoma','Yamatotakada','Tenri'],
+    'Wakayama': ['Wakayama','Tanabe','Hashimoto','Kinokawa','Kainan'],
+    'Tottori': ['Tottori','Yonago','Kurayoshi','Sakaiminato'],
+    'Shimane': ['Matsue','Izumo','Hamada','Masuda','Oda'],
+    'Okayama': ['Okayama','Kurashiki','Tsuyama','Soja','Tamano'],
+    'Hiroshima': ['Hiroshima','Fukuyama','Kure','Onomichi','Higashihiroshima'],
+    'Yamaguchi': ['Yamaguchi','Shimonoseki','Ube','Iwakuni','Shunan'],
+    'Tokushima': ['Tokushima','Naruto','Anan','Komatsushima','Yoshinogawa'],
+    'Kagawa': ['Takamatsu','Marugame','Sakaide','Sanuki','Zentsuji'],
+    'Ehime': ['Matsuyama','Imabari','Niihama','Saijo','Uwajima'],
+    'Kochi': ['Kochi','Nankoku','Shimanto','Tosa','Susaki'],
+    'Fukuoka': ['Fukuoka','Kitakyushu','Kurume','Omuta','Iizuka','Hakata','Tenjin'],
+    'Saga': ['Saga','Karatsu','Tosu','Imari','Takeo'],
+    'Nagasaki': ['Nagasaki','Sasebo','Isahaya','Omura','Shimabara'],
+    'Kumamoto': ['Kumamoto','Yatsushiro','Tamana','Arao','Uto'],
+    'Oita': ['Oita','Beppu','Nakatsu','Saiki','Usuki'],
+    'Miyazaki': ['Miyazaki','Miyakonojo','Nobeoka','Hyuga','Nichinan'],
+    'Kagoshima': ['Kagoshima','Kirishima','Kanoya','Satsumasendai','Ibusuki'],
+    'Okinawa': ['Naha','Okinawa','Urasoe','Ginowan','Chatan','Nago']
+};
+
+function updateCityDropdown() {
+    const pref = document.getElementById('prefecture-select').value;
+    const citySelect = document.getElementById('city-select');
+    const hint = document.getElementById('city-hint');
+    const lang = localStorage.getItem('kokoro-lang') || 'en';
+
+    citySelect.innerHTML = '';
+
+    if (!pref) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = lang === 'en' ? 'Select prefecture first' : '先に都道府県を選択';
+        citySelect.appendChild(opt);
+        hint.classList.remove('hidden');
+        return;
+    }
+
+    hint.classList.add('hidden');
+    const cities = prefectureCities[pref] || [];
+
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = lang === 'en' ? 'Select city' : '市区町村を選択';
+    citySelect.appendChild(defaultOpt);
+
+    cities.forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        if ('{{ old("location", $user->profile->location ?? "") }}' === city) opt.selected = true;
+        citySelect.appendChild(opt);
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const prefSelect = document.getElementById('prefecture-select');
+    if (prefSelect && prefSelect.value) {
+        updateCityDropdown();
+    }
+});
 </script>
 @endsection

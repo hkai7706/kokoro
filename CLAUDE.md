@@ -31,7 +31,7 @@ php artisan serve
 app/
 ├── Http/
 │   ├── Controllers/
-│   │   ├── AuthController.php      # Login, register, logout
+│   │   ├── AuthController.php      # Login, register, logout (specific error: no account / wrong password)
 │   │   ├── HomeController.php      # Home feed, search with filters
 │   │   ├── ProfileController.php   # Profile CRUD, view other users
 │   │   ├── MatchController.php     # Like/unlike, block/report, who-liked-me
@@ -60,7 +60,7 @@ resources/views/
 │   ├── app.blade.php       # Main layout: sidebar, dark mode, ENG/JP toggle
 │   └── admin.blade.php     # Admin layout
 ├── landing.blade.php       # Public landing page (SEO, testimonials, 3-step flow)
-├── auth.blade.php          # Login/register (standalone, own lang toggle)
+├── auth.blade.php          # Login/register (standalone, own lang toggle, show/hide password)
 ├── home.blade.php          # Activity hub: 4 mini games (Top Top style), articles, profiles
 ├── search.blade.php        # Search with filters (prefecture, gender, age range)
 ├── profile.blade.php       # Edit own profile (horizontal photo layout)
@@ -89,6 +89,24 @@ resources/views/
 - `applyLanguage(lang)` in layouts/app.blade.php swaps all text content
 - Auth page has its own standalone `applyAuthLang()` since it doesn't use the layout
 - Language preference stored in `localStorage` key `kokoro-lang`
+
+### Prefecture → City Cascading Dropdown
+- Both `profile-create.blade.php` and `profile.blade.php` use a cascading select: user picks prefecture first, then city populates
+- `prefectureCities` JS object maps all 47 prefectures to their major cities
+- `updateCityDropdown()` function populates city `<select>` based on selected prefecture
+- Shows "Please select a prefecture first" hint if user clicks city before choosing prefecture
+- Supports `old()` value restoration on validation failure
+- City is stored in `location` field, prefecture in `prefecture` field
+
+### Login Error Messages
+- `AuthController@login` checks if email exists before attempting auth
+- Non-existent email: "There is no account with this email. Please sign up first."
+- Wrong password: "The password does not match our records."
+
+### Show/Hide Password
+- Auth page (`auth.blade.php`) has eye icon toggle on all 3 password fields (login, register, confirm)
+- `togglePassword(inputId, btn)` JS function switches input type between password/text
+- Uses two SVG icons: eye-open (visible) and eye-closed (hidden), toggled via CSS `hidden` class
 
 ### Dark Mode
 - Tailwind `darkMode: 'class'` configuration
@@ -214,7 +232,9 @@ All games are client-side JavaScript in `home.blade.php`. No backend routes need
 
 ### View-Specific UI Patterns
 - **profile.blade.php**: Horizontal photo+description layout, comma-separated hobby helper text
-- **profile-create.blade.php**: Progress indicator dots (step 1 of 2), motivating copy, reassurance text
+- **profile-create.blade.php**: Progress indicator dots (step 1 of 2), motivating copy, reassurance text, cascading Prefecture→City dropdown
+- **profile.blade.php**: Cascading Prefecture→City dropdown (same as profile-create), horizontal photo layout
+- **auth.blade.php**: Show/hide password toggle (eye icon) on all password fields
 - **inbox.blade.php**: Conversation count subtitle, ring-2 highlight on unread avatars, chevron arrows
 - **conversation.blade.php**: Compact header, partner name links to profile, optimistic message UI
 - **user-profile.blade.php**: Contextual status hints after actions, compatibility explanation text
