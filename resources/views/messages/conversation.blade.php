@@ -5,13 +5,13 @@
 <div class="max-w-2xl mx-auto flex flex-col" style="height: calc(100vh - 10rem);">
     {{-- Chat Header --}}
     <div class="card rounded-b-none border-b-0 px-3.5 py-2.5 flex items-center gap-2.5">
-        <a href="{{ route('messages.inbox') }}" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition p-0.5">
+        <a href="{{ route('messages.inbox') }}" class="text-gray-500 hover:text-gray-600 dark:hover:text-gray-200 transition p-0.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </a>
         <a href="{{ route('user.profile', $partner->id) }}" class="flex items-center gap-2.5 flex-1 min-w-0">
             <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shrink-0">
                 @if($partner->profile && $partner->profile->profile_photo)
-                    <img src="{{ asset('storage/' . $partner->profile->profile_photo) }}" class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/' . $partner->profile->profile_photo) }}" class="w-full h-full object-cover" loading="lazy" alt="{{ $partner->name }}'s profile photo">
                 @else
                     <div class="w-full h-full flex items-center justify-center">
                         <span class="text-xs font-bold text-gray-300 dark:text-gray-500">{{ strtoupper(substr($partner->name, 0, 1)) }}</span>
@@ -21,7 +21,7 @@
             <div class="min-w-0">
                 <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{{ $partner->name }}</h2>
                 @if($partner->profile && $partner->profile->last_active_at)
-                    <p class="text-[10px] text-gray-400 leading-tight">
+                    <p class="text-[10px] text-gray-500 leading-tight">
                         @if($partner->profile->last_active_at->diffInMinutes(now()) < 30)
                             <span class="text-emerald-500" data-en="Online" data-jp="オンライン">Online</span>
                         @else
@@ -33,7 +33,7 @@
         </a>
         {{-- More menu --}}
         <div class="relative">
-            <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-gray-500 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </button>
             <div class="hidden absolute right-0 mt-1 w-36 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200/60 dark:border-gray-700 py-1 z-50">
@@ -61,7 +61,7 @@
             </div>
         @empty
             <div class="text-center py-12">
-                <p class="text-gray-400 text-xs mb-1" data-en="This is the beginning of your conversation" data-jp="会話の始まりです">This is the beginning of your conversation</p>
+                <p class="text-gray-500 text-xs mb-1" data-en="This is the beginning of your conversation" data-jp="会話の始まりです">This is the beginning of your conversation</p>
                 <p class="text-gray-300 dark:text-gray-500 text-[11px]" data-en="Say something nice to break the ice!" data-jp="何か素敵なメッセージを送りましょう！">Say something nice to break the ice!</p>
             </div>
         @endforelse

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserMatch;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MatchController extends Controller
 {
@@ -28,47 +29,55 @@ class MatchController extends Controller
             return back()->with('error', 'You have blocked this user.');
         }
 
-        Like::firstOrCreate([
-            'sender_id' => $senderId,
-            'receiver_id' => $receiverId,
-        ]);
-
-        // Check if mutual like exists
-        $mutualLike = Like::where('sender_id', $receiverId)
-            ->where('receiver_id', $senderId)
-            ->exists();
-
-        if ($mutualLike) {
-            $user1 = min($senderId, $receiverId);
-            $user2 = max($senderId, $receiverId);
-
-            UserMatch::firstOrCreate(
-                ['user1_id' => $user1, 'user2_id' => $user2],
-                ['status' => 'active']
-            );
-
-            Notification::create([
-                'user_id' => $senderId,
-                'type' => 'match',
-                'content' => 'You have a new match! Start chatting now.',
+        $result = DB::transaction(function () use ($senderId, $receiverId) {
+            Like::firstOrCreate([
+                'sender_id' => $senderId,
+                'receiver_id' => $receiverId,
             ]);
+
+            // Check if mutual like exists
+            $mutualLike = Like::where('sender_id', $receiverId)
+                ->where('receiver_id', $senderId)
+                ->exists();
+
+            if ($mutualLike) {
+                $user1 = min($senderId, $receiverId);
+                $user2 = max($senderId, $receiverId);
+
+                UserMatch::firstOrCreate(
+                    ['user1_id' => $user1, 'user2_id' => $user2],
+                    ['status' => 'active']
+                );
+
+                Notification::create([
+                    'user_id' => $senderId,
+                    'type' => 'match',
+                    'content' => 'You have a new match! Start chatting now.',
+                ]);
+                Notification::create([
+                    'user_id' => $receiverId,
+                    'type' => 'match',
+                    'content' => 'You have a new match! Start chatting now.',
+                ]);
+
+                return 'matched';
+            }
+
             Notification::create([
                 'user_id' => $receiverId,
-                'type' => 'match',
-                'content' => 'You have a new match! Start chatting now.',
+                'type' => 'like',
+                'content' => 'Someone liked your profile!',
             ]);
 
+            return 'liked';
+        });
+
+        if ($result === 'matched') {
             if ($request->expectsJson()) {
                 return response()->json(['status' => 'matched', 'message' => "It's a match!"]);
             }
             return back()->with('success', "It's a match! You can now message each other.");
         }
-
-        Notification::create([
-            'user_id' => $receiverId,
-            'type' => 'like',
-            'content' => 'Someone liked your profile!',
-        ]);
 
         if ($request->expectsJson()) {
             return response()->json(['status' => 'liked', 'message' => 'Like sent!']);

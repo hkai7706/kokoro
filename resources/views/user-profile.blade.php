@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="max-w-2xl mx-auto">
-    <a href="{{ url()->previous() }}" class="inline-flex items-center text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 mb-4 transition">
+    <a href="{{ url()->previous() }}" class="inline-flex items-center text-xs text-gray-500 hover:text-gray-600 dark:hover:text-gray-200 mb-4 transition">
         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         <span data-en="Back" data-jp="戻る">Back</span>
     </a>
@@ -12,7 +12,7 @@
         {{-- Photo --}}
         <div class="h-64 sm:h-72 bg-gray-100 dark:bg-gray-800 relative">
             @if($user->profile && $user->profile->profile_photo)
-                <img src="{{ asset('storage/' . $user->profile->profile_photo) }}" class="w-full h-full object-cover">
+                <img src="{{ asset('storage/' . $user->profile->profile_photo) }}" class="w-full h-full object-cover" loading="lazy" alt="{{ $user->name }}'s profile photo">
             @else
                 <div class="w-full h-full flex items-center justify-center">
                     <span class="text-6xl font-bold text-gray-200 dark:text-gray-700">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
@@ -37,14 +37,14 @@
                         {{ $user->name }}@if($user->profile), {{ $user->profile->age }}@endif
                     </h1>
                     @if($user->profile)
-                        <p class="text-xs text-gray-400 mt-0.5">
+                        <p class="text-xs text-gray-500 mt-0.5">
                             {{ $user->profile->location }}{{ $user->profile->prefecture ? ', ' . $user->profile->prefecture : '' }}
                             &middot; {{ ucfirst($user->profile->gender) }}
                         </p>
                     @endif
                 </div>
                 <div class="relative">
-                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-gray-500 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                     </button>
                     <div class="hidden absolute right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200/60 dark:border-gray-700 py-1 z-50">
@@ -73,7 +73,7 @@
                     <div class="flex flex-col gap-3 mb-4">
                         @if($user->profile->hobbies)
                             <div>
-                                <h3 class="text-[11px] font-medium text-gray-400 mb-1.5" data-en="Hobbies" data-jp="趣味">Hobbies</h3>
+                                <h3 class="text-[11px] font-medium text-gray-500 mb-1.5" data-en="Hobbies" data-jp="趣味">Hobbies</h3>
                                 <div class="flex flex-wrap gap-1.5">
                                     @foreach($user->profile->hobbies_array as $hobby)
                                         <span class="tag bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400">{{ $hobby }}</span>
@@ -83,7 +83,7 @@
                         @endif
                         @if($user->profile->interests)
                             <div>
-                                <h3 class="text-[11px] font-medium text-gray-400 mb-1.5" data-en="Interests" data-jp="興味">Interests</h3>
+                                <h3 class="text-[11px] font-medium text-gray-500 mb-1.5" data-en="Interests" data-jp="興味">Interests</h3>
                                 <div class="flex flex-wrap gap-1.5">
                                     @foreach($user->profile->interests_array as $interest)
                                         <span class="tag bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400">{{ $interest }}</span>
@@ -104,7 +104,7 @@
                         <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1">
                             <div class="h-1 rounded-full {{ $compat >= 60 ? 'bg-emerald-500' : ($compat >= 30 ? 'bg-amber-500' : 'bg-gray-400') }}" style="width: {{ $compat }}%"></div>
                         </div>
-                        <p class="text-[11px] text-gray-400 mt-1.5" data-en="Based on shared hobbies, interests, and location" data-jp="共通の趣味・興味・地域から算出">Based on shared hobbies, interests, and location</p>
+                        <p class="text-[11px] text-gray-500 mt-1.5" data-en="Based on shared hobbies, interests, and location" data-jp="共通の趣味・興味・地域から算出">Based on shared hobbies, interests, and location</p>
                     </div>
                 @endif
             @endif
@@ -125,11 +125,11 @@
                 @if($isMatched)
                     <p class="text-[11px] text-emerald-500 text-center mt-2" data-en="You're matched! Send a message to get started." data-jp="マッチしました！メッセージを送ってみましょう。">You're matched! Send a message to get started.</p>
                 @elseif($hasLiked)
-                    <p class="text-[11px] text-gray-400 text-center mt-2" data-en="You've liked this person. Waiting for them to like you back." data-jp="いいね済み。相手のいいね返しを待っています。">You've liked this person. Waiting for them to like you back.</p>
+                    <p class="text-[11px] text-gray-500 text-center mt-2" data-en="You've liked this person. Waiting for them to like you back." data-jp="いいね済み。相手のいいね返しを待っています。">You've liked this person. Waiting for them to like you back.</p>
                 @endif
             @else
                 <div class="pt-3 border-t border-gray-100 dark:border-gray-700 text-center">
-                    <p class="text-gray-400 text-xs mb-2" data-en="You have blocked this user." data-jp="このユーザーをブロックしています。">You have blocked this user.</p>
+                    <p class="text-gray-500 text-xs mb-2" data-en="You have blocked this user." data-jp="このユーザーをブロックしています。">You have blocked this user.</p>
                     <form method="POST" action="{{ route('user.unblock') }}">@csrf<input type="hidden" name="user_id" value="{{ $user->id }}"><button type="submit" class="btn btn-ghost btn-sm" data-en="Unblock" data-jp="ブロック解除">Unblock</button></form>
                 </div>
             @endif

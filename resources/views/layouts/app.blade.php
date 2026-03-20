@@ -120,7 +120,7 @@
                     <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="flex items-center gap-1.5 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg pl-1 pr-2 py-1 transition cursor-pointer" aria-label="User menu" aria-expanded="false" aria-haspopup="true">
                         <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-900/20 overflow-hidden border border-rose-200/60 dark:border-rose-800/40 flex items-center justify-center">
                             @if(auth()->user()->profile && auth()->user()->profile->profile_photo)
-                                <img src="{{ asset('storage/' . auth()->user()->profile->profile_photo) }}" class="w-full h-full object-cover">
+                                <img src="{{ asset('storage/' . auth()->user()->profile->profile_photo) }}" class="w-full h-full object-cover" alt="Your profile photo">
                             @else
                                 <span class="text-[11px] font-bold text-rose-400">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                             @endif

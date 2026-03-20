@@ -5,7 +5,7 @@
 <div class="max-w-2xl mx-auto">
     <div class="mb-5">
         <h1 class="text-lg font-bold text-gray-800 dark:text-gray-100" data-en="My Profile" data-jp="マイプロフィール">My Profile</h1>
-        <p class="text-xs text-gray-400 mt-0.5" data-en="Keep your profile up to date to get better matches" data-jp="プロフィールを最新にしてより良いマッチを">Keep your profile up to date to get better matches</p>
+        <p class="text-xs text-gray-500 mt-0.5" data-en="Keep your profile up to date to get better matches" data-jp="プロフィールを最新にしてより良いマッチを">Keep your profile up to date to get better matches</p>
     </div>
 
     @if(session('success'))
@@ -36,14 +36,14 @@
                 </div>
                 <div>
                     <p class="text-sm font-medium text-gray-700 dark:text-gray-200" data-en="Profile photo" data-jp="プロフィール写真">Profile photo</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5" data-en="JPG or PNG, max 5MB" data-jp="JPGまたはPNG、最大5MB">JPG or PNG, max 5MB</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5" data-en="JPG or PNG, max 5MB" data-jp="JPGまたはPNG、最大5MB">JPG or PNG, max 5MB</p>
                 </div>
             </div>
 
             <div class="space-y-4">
                 {{-- Name --}}
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Display Name" data-jp="表示名">Display Name</label>
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="Display Name" data-jp="表示名">Display Name</label>
                     <input type="text" name="name" value="{{ old('name', $user->name) }}" required
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
                     @error('name') <p class="text-red-500 text-[11px] mt-1">{{ $message }}</p> @enderror
@@ -52,12 +52,12 @@
                 {{-- Age / Gender --}}
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Age" data-jp="年齢">Age</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="Age" data-jp="年齢">Age</label>
                         <input type="number" name="age" value="{{ old('age', $user->profile->age ?? '') }}" min="18" max="99" required
                             class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Gender" data-jp="性別">Gender</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="Gender" data-jp="性別">Gender</label>
                         <select name="gender" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
                             <option value="male" {{ old('gender', $user->profile->gender ?? '') === 'male' ? 'selected' : '' }} data-en="Male" data-jp="男性">Male</option>
                             <option value="female" {{ old('gender', $user->profile->gender ?? '') === 'female' ? 'selected' : '' }} data-en="Female" data-jp="女性">Female</option>
@@ -69,7 +69,7 @@
                 {{-- Prefecture / City --}}
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Prefecture" data-jp="都道府県">Prefecture</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="Prefecture" data-jp="都道府県">Prefecture</label>
                         <select name="prefecture" id="prefecture-select" required onchange="updateCityDropdown()" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
                             <option value="" data-en="Select prefecture" data-jp="都道府県を選択">Select prefecture</option>
                             @foreach($prefectures as $pref)
@@ -78,7 +78,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="City" data-jp="市区町村">City</label>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="City" data-jp="市区町村">City</label>
                         <select name="location" id="city-select" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition">
                             <option value="" data-en="Select prefecture first" data-jp="先に都道府県を選択">Select prefecture first</option>
                         </select>
@@ -88,16 +88,16 @@
 
                 {{-- Hobbies --}}
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Hobbies" data-jp="趣味">Hobbies</label>
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="Hobbies" data-jp="趣味">Hobbies</label>
                     <input type="text" name="hobbies" value="{{ old('hobbies', $user->profile->hobbies ?? '') }}"
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition"
                         placeholder="Hiking, Cooking, Photography" data-placeholder-en="Hiking, Cooking, Photography" data-placeholder-jp="ハイキング、料理、写真">
-                    <p class="text-[11px] text-gray-300 dark:text-gray-500 mt-1" data-en="Separate with commas. Used for compatibility matching." data-jp="カンマ区切り。相性マッチングに使用されます。">Separate with commas. Used for compatibility matching.</p>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-300 mt-1" data-en="Separate with commas. Used for compatibility matching." data-jp="カンマ区切り。相性マッチングに使用されます。">Separate with commas. Used for compatibility matching.</p>
                 </div>
 
                 {{-- Interests --}}
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="Interests" data-jp="興味">Interests</label>
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="Interests" data-jp="興味">Interests</label>
                     <input type="text" name="interests" value="{{ old('interests', $user->profile->interests ?? '') }}"
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition"
                         placeholder="Music, Travel, Anime" data-placeholder-en="Music, Travel, Anime" data-placeholder-jp="音楽、旅行、アニメ">
@@ -105,7 +105,7 @@
 
                 {{-- Bio --}}
                 <div>
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1" data-en="About you" data-jp="自己紹介">About you</label>
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-300 mb-1" data-en="About you" data-jp="自己紹介">About you</label>
                     <textarea name="bio" rows="3"
                         class="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-sm focus:ring-2 focus:ring-rose-100 focus:border-rose-400 transition resize-none"
                         placeholder="A few words about yourself..." data-placeholder-en="A few words about yourself..." data-placeholder-jp="自己紹介を書きましょう...">{{ old('bio', $user->profile->bio ?? '') }}</textarea>

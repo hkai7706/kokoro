@@ -191,6 +191,19 @@ All games are client-side JavaScript in `home.blade.php`. No backend routes need
 - Bcrypt password hashing (12 rounds)
 - Banned user middleware check on every authenticated request
 - Rate limiting on auth, likes, messages, and polling
+- SESSION_SECURE_COOKIE=true for HTTPS-only session cookies
+- DB::transaction on mutual like creation to prevent race conditions
+- WCAG 2.1 AA contrast compliance (minimum 4.5:1 ratio on all text)
+
+### Accessibility (WCAG 2.1 AA)
+- All `text-gray-400` replaced with `text-gray-500` (light mode) or `text-gray-300` (dark mode) for 4.5:1+ contrast
+- ARIA labels on all interactive elements (buttons, toggles, menus)
+- `aria-expanded`, `aria-haspopup`, `aria-controls` on dropdown menus
+- `aria-hidden="true"` on decorative SVGs
+- Semantic HTML: `<nav>`, `<blockquote>`, `<cite>`, `<ul>/<li>` for navigation
+- Heading hierarchy maintained (no skipped levels)
+- All `<img>` tags have descriptive `alt` attributes
+- `loading="lazy"` on below-fold images
 
 ## Design System (v2 — Clean & Modern)
 

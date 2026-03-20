@@ -42,7 +42,7 @@ Standard Laravel config files. Key customizations:
 | `AuthController.php` | `/auth`, `/login`, `/register`, `/logout` | Handles login form display, login validation (specific errors: no account vs wrong password), user registration with bcrypt hashing, and session logout |
 | `HomeController.php` | `/home`, `/search` | Home page (passes suggested profiles to view), search with filters (prefecture, gender, age range, keyword) |
 | `ProfileController.php` | `/profile/*`, `/user/{id}` | Profile CRUD (create, show, update), view other users with compatibility score calculation |
-| `MatchController.php` | `/like`, `/unlike`, `/skip`, `/liked`, `/who-liked-me`, `/block`, `/unblock`, `/report` | Like/unlike users (creates mutual match if reciprocal), skip profiles, view likes given/received, block/unblock users, file reports |
+| `MatchController.php` | `/like`, `/unlike`, `/skip`, `/liked`, `/who-liked-me`, `/block`, `/unblock`, `/report` | Like/unlike users (creates mutual match if reciprocal, wrapped in DB::transaction), skip profiles, view likes given/received, block/unblock users, file reports |
 | `MessageController.php` | `/messages`, `/messages/{userId}`, `/messages/{userId}/new` | Inbox listing with last message + unread count, conversation view with read receipt marking, AJAX message send (returns JSON), polling endpoint for new messages |
 | `AdminController.php` | `/admin/*` | Admin dashboard (stats), user management (ban/unban/delete), report review/resolve, match listing, message overview |
 
@@ -258,6 +258,28 @@ All games are self-contained JavaScript within the home view. No server-side log
 2. **Love Fortune** — Random fortune card. Tap to reveal with flip animation, gradient backgrounds per fortune level.
 3. **Emoji Match** — Memory card game. CSS 3D flip transforms, timer, move counter, star rating system.
 4. **Heart Catcher** — Tap game inspired by Top Top. Falling emoji hearts to catch, 30-second timer, combo multiplier, increasing difficulty, score-based confetti.
+
+---
+
+## Security & Accessibility
+
+### Security
+- CSRF protection on all POST routes
+- XSS sanitization via `e()` helper
+- SecurityHeaders middleware (CSP, X-Frame-Options, etc.)
+- ForceHttps middleware + TrustProxies for Railway
+- Bcrypt password hashing (12 rounds)
+- SESSION_SECURE_COOKIE=true for HTTPS-only cookies
+- DB::transaction on mutual like creation (race condition prevention)
+- Rate limiting on auth, likes, messages, polling
+
+### Accessibility (WCAG 2.1 AA)
+- All text meets 4.5:1 minimum contrast ratio (`text-gray-500` on light, `text-gray-300` on dark)
+- ARIA labels on all interactive elements (buttons, toggles, menus)
+- Semantic HTML throughout (`<nav>`, `<blockquote>`, `<cite>`, proper heading hierarchy)
+- All `<img>` tags have descriptive `alt` attributes
+- `loading="lazy"` on below-fold images
+- `aria-hidden="true"` on decorative SVGs
 
 ---
 

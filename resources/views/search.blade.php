@@ -5,7 +5,7 @@
 <div class="max-w-5xl mx-auto">
     <div class="mb-5">
         <h1 class="text-lg font-bold text-gray-900 dark:text-gray-100" data-en="Discover people" data-jp="人を探す">Discover people</h1>
-        <p class="text-sm text-gray-400 mt-0.5" data-en="Find someone who shares your interests" data-jp="共通の趣味を持つ人を見つけましょう">Find someone who shares your interests</p>
+        <p class="text-sm text-gray-500 mt-0.5" data-en="Find someone who shares your interests" data-jp="共通の趣味を持つ人を見つけましょう">Find someone who shares your interests</p>
     </div>
 
     {{-- Filters --}}
@@ -39,14 +39,14 @@
             </div>
             <button type="submit" class="btn btn-rose" data-en="Search" data-jp="検索">Search</button>
             @if(request()->hasAny(['prefecture','gender','min_age','max_age']))
-                <a href="{{ route('search') }}" class="text-xs text-gray-400 hover:text-gray-600 py-2" data-en="Clear filters" data-jp="フィルタークリア">Clear filters</a>
+                <a href="{{ route('search') }}" class="text-xs text-gray-500 hover:text-gray-600 py-2" data-en="Clear filters" data-jp="フィルタークリア">Clear filters</a>
             @endif
         </form>
     </div>
 
     {{-- Results --}}
     @if($results->count() > 0)
-        <p class="text-xs text-gray-400 mb-4"><span data-en="{{ $results->total() }} people found" data-jp="{{ $results->total() }}人が見つかりました">{{ $results->total() }} people found</span></p>
+        <p class="text-xs text-gray-500 mb-4"><span data-en="{{ $results->total() }} people found" data-jp="{{ $results->total() }}人が見つかりました">{{ $results->total() }} people found</span></p>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($results as $userProfile)
                 @php $compat = auth()->user()->compatibilityWith($userProfile); @endphp
@@ -54,7 +54,7 @@
                     <a href="{{ route('user.profile', $userProfile->id) }}" class="block">
                         <div class="relative h-48 bg-gray-100 dark:bg-gray-800">
                             @if($userProfile->profile && $userProfile->profile->profile_photo)
-                                <img src="{{ asset('storage/' . $userProfile->profile->profile_photo) }}" class="w-full h-full object-cover" loading="lazy">
+                                <img src="{{ asset('storage/' . $userProfile->profile->profile_photo) }}" class="w-full h-full object-cover" loading="lazy" alt="{{ $userProfile->name }}'s profile photo">
                             @else
                                 <div class="w-full h-full flex items-center justify-center">
                                     <span class="text-4xl font-bold text-gray-200 dark:text-gray-700">{{ strtoupper(substr($userProfile->name, 0, 1)) }}</span>
@@ -74,7 +74,7 @@
                         <a href="{{ route('user.profile', $userProfile->id) }}">
                             <h3 class="font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ $userProfile->name }}@if($userProfile->profile), {{ $userProfile->profile->age }}@endif</h3>
                             @if($userProfile->profile)
-                                <p class="text-[11px] text-gray-400 mt-0.5">{{ $userProfile->profile->location }}</p>
+                                <p class="text-[11px] text-gray-500 mt-0.5">{{ $userProfile->profile->location }}</p>
                             @endif
                         </a>
                         @if($compat > 0)
@@ -109,7 +109,7 @@
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
             <h3 class="font-semibold text-gray-600 dark:text-gray-300 text-sm mb-1" data-en="No profiles found" data-jp="プロフィールが見つかりません">No profiles found</h3>
-            <p class="text-xs text-gray-400" data-en="Try adjusting your filters or check back later" data-jp="フィルターを変更するか、後でまたチェックしてください">Try adjusting your filters or check back later</p>
+            <p class="text-xs text-gray-500" data-en="Try adjusting your filters or check back later" data-jp="フィルターを変更するか、後でまたチェックしてください">Try adjusting your filters or check back later</p>
         </div>
     @endif
 </div>

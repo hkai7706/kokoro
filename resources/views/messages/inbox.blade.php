@@ -6,7 +6,7 @@
     <div class="mb-5">
         <h1 class="text-lg font-bold text-gray-800 dark:text-gray-100" data-en="Messages" data-jp="メッセージ">Messages</h1>
         @if(count($conversations) > 0)
-            <p class="text-xs text-gray-400 mt-0.5" data-en="{{ count($conversations) }} conversation{{ count($conversations) !== 1 ? 's' : '' }}" data-jp="{{ count($conversations) }}件の会話">{{ count($conversations) }} conversation{{ count($conversations) !== 1 ? 's' : '' }}</p>
+            <p class="text-xs text-gray-500 mt-0.5" data-en="{{ count($conversations) }} conversation{{ count($conversations) !== 1 ? 's' : '' }}" data-jp="{{ count($conversations) }}件の会話">{{ count($conversations) }} conversation{{ count($conversations) !== 1 ? 's' : '' }}</p>
         @endif
     </div>
 
@@ -19,7 +19,7 @@
                     <div class="relative shrink-0">
                         <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden {{ $convo['unread_count'] > 0 ? 'ring-2 ring-rose-400 ring-offset-1 dark:ring-offset-gray-900' : 'border border-gray-200 dark:border-gray-600' }}">
                             @if($convo['partner']->profile && $convo['partner']->profile->profile_photo)
-                                <img src="{{ asset('storage/' . $convo['partner']->profile->profile_photo) }}" class="w-full h-full object-cover">
+                                <img src="{{ asset('storage/' . $convo['partner']->profile->profile_photo) }}" class="w-full h-full object-cover" loading="lazy" alt="{{ $convo['partner']->name }}'s profile photo">
                             @else
                                 <div class="w-full h-full flex items-center justify-center">
                                     <span class="text-sm font-bold text-gray-300 dark:text-gray-500">{{ strtoupper(substr($convo['partner']->name, 0, 1)) }}</span>
@@ -39,7 +39,7 @@
                                 <span class="text-[11px] text-gray-300 dark:text-gray-500 shrink-0 ml-2">{{ $convo['last_message']->created_at->diffForHumans(null, true) }}</span>
                             @endif
                         </div>
-                        <p class="text-xs text-gray-400 truncate mt-0.5">
+                        <p class="text-xs text-gray-500 truncate mt-0.5">
                             @if($convo['last_message'])
                                 @if($convo['last_message']->sender_id === auth()->id())
                                     <span class="text-gray-300 dark:text-gray-500" data-en="You: " data-jp="あなた: ">You: </span>
@@ -66,7 +66,7 @@
                 <svg class="w-5 h-5 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
             </div>
             <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1" data-en="No conversations yet" data-jp="まだ会話がありません">No conversations yet</h3>
-            <p class="text-xs text-gray-400 mb-4 max-w-xs mx-auto" data-en="When you and someone both like each other, you'll be able to chat here." data-jp="お互いにいいねすると、ここでチャットできます。">When you and someone both like each other, you'll be able to chat here.</p>
+            <p class="text-xs text-gray-500 mb-4 max-w-xs mx-auto" data-en="When you and someone both like each other, you'll be able to chat here." data-jp="お互いにいいねすると、ここでチャットできます。">When you and someone both like each other, you'll be able to chat here.</p>
             <a href="{{ route('search') }}" class="btn btn-rose btn-sm" data-en="Browse profiles" data-jp="プロフィールを見る">Browse profiles</a>
         </div>
     @endif

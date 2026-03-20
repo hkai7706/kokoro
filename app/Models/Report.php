@@ -10,6 +10,7 @@ class Report extends Model
         'reporter_id',
         'reported_user_id',
         'reason',
+        'details',
         'message_id',
         'status',
     ];
